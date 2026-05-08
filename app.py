@@ -40,7 +40,14 @@ movies_dict = pickle.load(open('movie_dict.pkl', 'rb'))
 movies = pd.DataFrame(movies_dict)
 movies_dict = movies_dict['title'].values
 
-similarity = pickle.load(open('similarity.pkl', 'rb'))
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+cv = CountVectorizer(max_features=2800, stop_words='english')
+
+vectors = cv.fit_transform(movies['tags']).toarray()
+
+similarity = cosine_similarity(vectors)
 
 st.title("Movie Recommendation System")
 
